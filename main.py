@@ -10,7 +10,7 @@ def remaining_time():
     month = int(today.strftime("%m"))
     tr_months = ["Ocak", "Şubat", "Mart" , "Nisan" , "Mayıs", "Haziran" , "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"]
     tr_month = ""
-    for i in range(12):
+    for i in range(13):
         if month == i:
             tr_month = tr_months[i-1]
             break
@@ -26,7 +26,7 @@ def remaining_time():
     total_min = 1 
     now = datetime.now()
     seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
-    minutes_since_midnight = int(seconds_since_midnight //60)
+    minutes_since_midnight = int(seconds_since_midnight /60)
     holder = list()
     for i in range(6):
         checker = False
@@ -39,14 +39,18 @@ def remaining_time():
         holder.append(total_min)
     
     i = 0
-    while (holder[i] > minutes_since_midnight):
+    while (holder[i] < minutes_since_midnight):
         i+=1
+        if (i == 6):
+            i = 0
+            break
+
     if i == 0:
         remaining_hour = (1440 - minutes_since_midnight + holder[i]) // 60
-        remaining_minute = (1440 - minutes_since_midnight - holder[i]) % 60
+        remaining_minute = (1440 - minutes_since_midnight + holder[i]) % 60
     else:
-        remaining_hour = (minutes_since_midnight + holder[i]) // 60
-        remaining_minute = (minutes_since_midnight - holder[i]) % 60
+        remaining_hour = (holder[i] - minutes_since_midnight) // 60
+        remaining_minute = (holder[i] - minutes_since_midnight) % 60
 
     sentence = "Ezana {} saat {} dakika kaldı".format(remaining_hour,remaining_minute)
     print(sentence)
@@ -86,8 +90,7 @@ def pulling_data():
                     file.write("\n")
                     
 
-                        
-pulling_data()
+
 remaining_time()
                 
 
