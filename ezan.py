@@ -42,9 +42,6 @@ def correct():
     liste = open_file()
     return liste
 
-    
-
-
 def remaining_time():
     str_ezan_times = correct()
     for i in range(4):
