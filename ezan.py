@@ -22,7 +22,7 @@ def open_file():
     with open(complete_path,"r",encoding="utf-8") as file:
         checker = False
         for line in file:
-            if day in line and tr_month in line:
+            if "{} {}".format(day,tr_month) in line:
                 checker = True
                 for time in line.split():
                     str_ezan_times.append(time)
@@ -41,6 +41,9 @@ def correct():
         pulling_data()
     liste = open_file()
     return liste
+
+    
+
 
 def remaining_time():
     str_ezan_times = correct()
@@ -66,7 +69,7 @@ def remaining_time():
     if len(holder) == 0:
         print("HOLDER BOŞŞŞŞ")
     while (holder[i] < minutes_since_midnight):
-        if (i > 5):
+        if (i >= 5):
             i = 0
             break
         i+=1
