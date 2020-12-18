@@ -30,6 +30,7 @@ def open_file():
             return False
 
     return str_ezan_times
+
     
 def correct():
     if "vakitler.txt" not in os.listdir(path):
@@ -41,9 +42,7 @@ def correct():
         pulling_data()
     liste = open_file()
     return liste
-
-    
-
+        
 
 def remaining_time():
     str_ezan_times = correct()
@@ -66,8 +65,6 @@ def remaining_time():
         holder.append(total_min)
     
     i = 0
-    if len(holder) == 0:
-        print("HOLDER BOŞŞŞŞ")
     while (holder[i] < minutes_since_midnight):
         if (i >= 5):
             i = 0
@@ -91,11 +88,39 @@ def remaining_time():
 
     print(sentence)
 
+def get_location():
+    files = os.listdir(path)
+    complete_path = os.path.join(path,"location.txt")
+    URL = ""
+    if "location.txt" not in files:
+        print("LÜTFEN https://namazvakitleri.diyanet.gov.tr adresine gidin.")
+        print("İstediğiniz adresi yazdıktan adres çubuğundaki URL'yi kopyalayın. Daha sonra URL adresini aşağıya yapıştırın")
+        while True:
+            URL = input()
+            if "https://namazvakitleri.diyanet.gov.tr" not in URL:
+                print("LÜTFEN URL'NİN DOĞRU OLDUĞUNDAN EMİN OLUN VE TEKRAR DENEYİN")
+            else:
+                break
+        with open(complete_path,"w") as file:
+            file.write(URL)
+    with open(complete_path,"r") as file:
+        checker = False
+        for line in file:
+            if "https://namazvakitleri.diyanet.gov.tr" in line:
+                URL = line
+                checker = True
+                break
+        if checker == False:
+            print("BİR HATA OLDU... Lütfen 'location.txt' dosyasını silin ve yeniden deneyin...")
+            exit()
+    return URL
+
 def pulling_data():
     global page
     page = None
+    URL = get_location()
     try:
-        page = requests.get("https://namazvakitleri.diyanet.gov.tr/tr-TR/9581/karabuk-icin-namaz-vakti")
+        page = requests.get(URL)
     except:
         print("NO INTERNET CONNECTION")
         if "vakitler.txt" in os.listdir(path):
